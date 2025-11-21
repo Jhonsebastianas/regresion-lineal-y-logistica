@@ -197,7 +197,11 @@ with col3: metros = st.number_input("Metros Cuadrados", 20, 1000, 80)
 if st.button("Predecir"):
     input_data = np.array([[habitaciones, banos, metros]])
     
-    if "Regresión" in exercise:
+    # Determinar si es tarea de Regresión (Precio) o Clasificación (Tipo)
+    # Regresión: "Regresión Lineal" o "Red Neuronal (Regresión)"
+    is_regression_task = "Lineal" in exercise or "(Regresión)" in exercise
+    
+    if is_regression_task:
         if "Lineal" in exercise:
             pred = models['reg']['linear']['model'].predict(input_data)[0]
         else:
@@ -206,6 +210,7 @@ if st.button("Predecir"):
             pred = models['reg']['mlp']['model'].predict(input_scaled)[0]
         st.success(f"Precio estimado: ${pred:,.0f}")
     else:
+        # Clasificación: "Regresión Logística" o "Red Neuronal (Clasificación)"
         if "Logística" in exercise:
             pred = models['cls']['logistic']['model'].predict(input_data)[0]
             probs = models['cls']['logistic']['model'].predict_proba(input_data)[0]
