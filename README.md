@@ -1,108 +1,85 @@
-# Ejercicios de Aprendizaje de Máquina: Regresión Lineal y Regresión Logística
+# USO DE REGRESIÓN LOGÍSTICA Y REDES NEURONALES PARA LA CLASIFICACIÓN DE TIPO DE VIVIENDA Y PRECIO EN EL DATASET DE “ARRIENDOS - FINCA RAÍZ”
 
-Este proyecto implementa dos ejercicios de aprendizaje de máquina utilizando el dataset `inmuebles_header.csv`, que contiene información sobre propiedades en arriendo en Medellín, Colombia. Los ejercicios incluyen una regresión lineal para predecir precios de propiedades y una regresión logística para clasificar el tipo de propiedad (apartamento vs casa).
+**Autores:**
+Breyner Andres Taborda Agudelo, Jhon Sebastian Agudelo Sierra
+Politécnico Colombiano Jaime Isaza Cadavid
+breyner_taborda23191@elpoli.edu.co, jhon_agudelo23191@elpoli.edu.co
 
-## Descripción del Dataset
+## Resumen
+En este proyecto se aplicaron técnicas de inteligencia artificial, específicamente Regresión Logística y Redes Neuronales Artificiales, para abordar problemas de clasificación y predicción en el mercado inmobiliario. Se utilizó el dataset de "Arriendos - Finca Raíz" que contiene información sobre inmuebles en Medellín. Los modelos fueron entrenados para clasificar el tipo de vivienda (Casa o Apartamento) y estimar su precio. La Regresión Logística obtuvo una exactitud del 90%, mientras que la Red Neuronal alcanzó un 91%, mostrando una ligera mejora. Se concluye que las variables estructurales son determinantes para la clasificación, aunque el precio presenta una variabilidad más compleja de predecir.
 
-El dataset contiene las siguientes columnas:
-- `precio`: Precio del arriendo en pesos colombianos (COP)
-- `tipo_inmueble`: Tipo de propiedad (Apartamento o Casa)
-- `numero_habitaciones`: Número de habitaciones
-- `numero_banos`: Número de baños
-- `metros_cuadrados`: Área en metros cuadrados
-- `barrio_ubicacion`: Descripción del barrio y ubicación
+## 1. Introducción
+El mercado inmobiliario en ciudades metropolitanas como Medellín presenta una dinámica compleja influenciada por múltiples factores. La capacidad de clasificar automáticamente tipos de propiedades y estimar sus precios basándose en características físicas es de gran valor para agencias inmobiliarias y usuarios. El uso de algoritmos de aprendizaje automático permite analizar patrones en grandes volúmenes de datos que no son evidentes a simple vista, facilitando la toma de decisiones informadas y la automatización de procesos de valoración.
 
-## Preprocesamiento de Datos
+Las técnicas de regresión y clasificación, como la Regresión Logística y las Redes Neuronales, son herramientas fundamentales en la ciencia de datos. La Regresión Logística es ampliamente utilizada por su interpretabilidad en problemas de clasificación binaria, mientras que las Redes Neuronales ofrecen la capacidad de modelar relaciones no lineales complejas entre las variables. En este trabajo, se exploran ambas metodologías para entender sus fortalezas y limitaciones aplicadas a datos reales del sector finca raíz.
 
-Antes de aplicar los modelos, se realizó el siguiente preprocesamiento:
+El dataset utilizado ("inmuebles_header.csv") consta de aproximadamente 800 registros de inmuebles en arriendo. Los atributos principales incluyen:
+*   **Precio**: Valor del canon de arrendamiento (Variable objetivo para regresión).
+*   **Tipo de Inmueble**: Categoría del inmueble (Variable objetivo para clasificación: Casa vs Apartamento).
+*   **Número de Habitaciones**: Cantidad de alcobas (Entero).
+*   **Número de Baños**: Cantidad de baños (Entero).
+*   **Metros Cuadrados**: Área construida del inmueble (Flotante).
+*   **Barrio/Ubicación**: Localización del inmueble (Texto).
 
-1. **Limpieza de precios**: Se removieron los símbolos de dólar ($) y los puntos (.) usados como separadores de miles, convirtiendo los valores a tipo float.
-2. **Extracción de números**: Para las columnas de habitaciones, baños y metros cuadrados, se extrajeron los valores numéricos de las cadenas de texto.
-3. **Codificación binaria**: Para la regresión logística, se creó una variable binaria donde 0 representa "Apartamento" y 1 representa "Casa".
-4. **Manejo de valores faltantes**: Se eliminaron las filas con valores faltantes (aunque en este dataset no había ninguno).
+## 2. Regresión Logística
+**Entradas:** Habitaciones, Baños, Metros Cuadrados.
+**Salida:** 1 (Casa), 0 (Apartamento).
 
-## Regresión Lineal: Predicción de Precios
+A continuación, se presenta la matriz de confusión generada por el modelo:
 
-### Objetivo
-Predecir el precio de arriendo de una propiedad basado en sus características numéricas.
+**Figura 1. Matriz de confusión (Regresión Logística)**
+```
+[[173   1]
+ [ 19  12]]
+```
+*Donde: Filas = Real, Columnas = Predicho. (0=Apto, 1=Casa)*
 
-### Variables
-- **Independientes (X)**: `numero_habitaciones`, `numero_banos`, `metros_cuadrados`
-- **Dependiente (y)**: `precio`
+En cuanto a la evaluación se obtuvieron los siguientes valores en las métricas (Promedio Ponderado):
+*   **Error:** 0.10 (1 - Exactitud)
+*   **Exactitud (Accuracy):** 0.90
+*   **Precisión:** 0.90
+*   **Exhaustividad (Recall):** 0.90
+*   **F1-Score:** 0.88
 
-### Modelo
-Se utilizó el modelo `LinearRegression` de scikit-learn.
+**Tecnologías Aplicadas:**
+Para la implementación se utilizó el lenguaje de programación **Python**, haciendo uso de librerías especializadas como **Pandas** para la manipulación y limpieza de datos, y **Scikit-learn** para la construcción y entrenamiento del modelo de Regresión Logística (`LogisticRegression`). Se empleó `train_test_split` para dividir los datos y asegurar una validación objetiva.
 
-### Evaluación
-- **Error Cuadrático Medio (MSE)**: Mide el promedio de los errores al cuadrado.
-- **Coeficiente de Determinación (R²)**: Indica qué tan bien el modelo explica la variabilidad de los datos (valores cercanos a 1 son mejores).
+**Aplicación Construida:**
+La aplicación permite interactuar con los modelos entrenados.
 
-### Resultados Esperados
-El modelo proporciona coeficientes para cada variable independiente, mostrando cómo cada característica afecta el precio. Por ejemplo, un coeficiente positivo para `metros_cuadrados` indica que propiedades más grandes tienden a ser más caras.
+**Figura 2. Aplicación construida**
+*(Ver archivo app.py para la ejecución local)*
 
-## Regresión Logística: Clasificación de Tipo de Propiedad
+En la siguiente URL se puede acceder a la aplicación en ejecución: [Link al repositorio o despliegue]
 
-### Objetivo
-Clasificar si una propiedad es un apartamento (0) o una casa (1) basado en sus características.
+## 3. Red Neuronal Artificial
+**Entradas:** Habitaciones, Baños, Metros Cuadrados.
+**Salida:** 1 (Casa), 0 (Apartamento).
 
-### Variables
-- **Independientes (X)**: `numero_habitaciones`, `numero_banos`, `metros_cuadrados`
-- **Dependiente (y)**: `tipo_binario` (0 = Apartamento, 1 = Casa)
+A continuación, se describe la estructura de la red neuronal implementada. Se utilizó un Perceptrón Multicapa (MLP) con la siguiente arquitectura:
+*   **Capa de Entrada:** 3 neuronas (correspondientes a las 3 variables predictoras).
+*   **Capas Ocultas:** Dos capas densas. La primera con **64 neuronas** y la segunda con **32 neuronas**, ambas utilizando la función de activación **ReLU** (Rectified Linear Unit) para introducir no linealidad.
+*   **Capa de Salida:** 1 neurona (para clasificación binaria) o activación logística implícita en la función de pérdida.
+*   **Optimizador:** Adam, con un máximo de 2000 iteraciones.
 
-### Modelo
-Se utilizó el modelo `LogisticRegression` de scikit-learn.
+**Figura 3. Arquitectura de la RNA**
+*(Esquema: Entrada 3 -> Oculta 64 -> Oculta 32 -> Salida 1)*
 
-### Evaluación
-- **Precisión (Accuracy)**: Porcentaje de predicciones correctas.
-- **Matriz de Confusión**: Muestra los verdaderos positivos, falsos positivos, etc.
-- **Reporte de Clasificación**: Incluye precisión, recall y F1-score para cada clase.
+En cuanto a la evaluación se obtuvieron los siguientes valores en las métricas (Promedio Ponderado):
+*   **Exactitud (Accuracy):** 0.91
+*   **Precisión:** 0.91
+*   **Exhaustividad (Recall):** 0.91
+*   **F1-Score:** 0.89
 
-### Resultados Esperados
-El modelo asigna probabilidades de que una propiedad sea una casa o apartamento, clasificándola en la categoría con mayor probabilidad.
+**Tecnologías Aplicadas:**
+Se utilizó la librería **Scikit-learn** y su clase `MLPClassifier` para la implementación de la Red Neuronal. Se aplicó **StandardScaler** para normalizar los datos de entrada, un paso crítico para el correcto funcionamiento y convergencia de las redes neuronales. La visualización de resultados se apoyó en métricas estándar de la industria.
 
-## Visualizaciones
+## 4. Conclusiones
+1.  **Comparación de Rendimiento:** Ambos modelos mostraron un alto desempeño global (alrededor del 90-91% de exactitud). Sin embargo, la Red Neuronal Artificial superó ligeramente a la Regresión Logística, especialmente en la clasificación de la clase minoritaria ("Casa"), logrando identificar un caso adicional correctamente en el conjunto de prueba. Esto sugiere que la capacidad de la red neuronal para capturar relaciones no lineales le otorga una pequeña ventaja en este dataset.
 
-El código incluye las siguientes visualizaciones:
-1. **Gráfico de dispersión**: Precio real vs precio predicho para la regresión lineal.
-2. **Gráfico de barras**: Distribución de tipos de inmueble.
-3. **Mapa de calor**: Matriz de correlación entre variables numéricas.
+2.  **Importancia del Preprocesamiento:** Para la Red Neuronal, fue indispensable realizar el escalado de las variables (normalización) para lograr la convergencia del modelo. A diferencia de la Regresión Logística que puede ser más robusta a escalas diferentes, la Red Neuronal requiere que todas las entradas estén en rangos similares para ajustar los pesos eficientemente.
 
-## Cómo Ejecutar el Código
-
-### Opción 1: Script de Consola (main.py)
-1. Asegúrate de tener instaladas las librerías necesarias:
-   ```
-   pip install pandas numpy scikit-learn matplotlib seaborn
-   ```
-
-2. Ejecuta el script `main.py`:
-   ```
-   python main.py
-   ```
-
-El script cargará los datos, realizará el preprocesamiento, entrenará los modelos, evaluará su rendimiento y mostrará las visualizaciones.
-
-### Opción 2: Interfaz Gráfica (app.py)
-Para una experiencia interactiva con selección de ejercicios y formulario de predicción:
-
-1. Instala Streamlit:
-   ```
-   pip install streamlit
-   ```
-
-2. Ejecuta la aplicación:
-   ```
-   streamlit run app.py
-   ```
-
-La aplicación se abrirá en tu navegador web, permitiendo:
-- Seleccionar entre regresión lineal o logística
-- Ver gráficos con explicaciones detalladas
-- Ingresar datos para obtener predicciones en tiempo real
-
-## Interpretación de Resultados
-
-- **Regresión Lineal**: Los coeficientes indican la importancia relativa de cada característica en la determinación del precio. Un R² alto sugiere un buen ajuste del modelo.
-- **Regresión Logística**: Una alta precisión indica que el modelo es efectivo para distinguir entre apartamentos y casas basándose en las características proporcionadas.
-
-Estos ejercicios demuestran aplicaciones prácticas del aprendizaje de máquina en el análisis de datos inmobiliarios, permitiendo predicciones y clasificaciones útiles para toma de decisiones en el mercado de arriendos.
+## 5. Bibliografía
+*   Giraldo-Plaza, J., Guzmán-Luna, J y Ledesma-Castillo, A. (2011). Sistema multiagente para la composición de servicios web semánticos.
+*   Giraldo-Plaza, J., Ovalle-Carranza, D., y Salazar-Ospina, Oscar (2016). Modelo basado en servicios web para la comparación inteligente de procesos de negocio. Revista GTI, 15(41), 57-64.
+*   Scikit-learn Developers. (2024). User Guide: Neural network models (supervised).
